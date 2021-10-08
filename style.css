@@ -1,0 +1,33 @@
+body {
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+div {
+    display: flex;
+    justify-content: center;
+    flex: 1 1 100%;
+    margin: 1em auto;
+}
+
+#instructions {
+    flex-direction:column;
+}
+
+#right-panel {
+    flex-direction: column;
+}
+
+#highscore {
+    flex-wrap: wrap;
+    max-height: 1.5em;
+}
+
+#highscore-list {
+    flex-direction: column;
+}
+
+h2 {
+    margin: 0 auto;
+}
