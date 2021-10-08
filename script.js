@@ -1,15 +1,13 @@
 cnv = document.getElementById('canvas');
 ctx = cnv.getContext('2d');
 document.addEventListener('keydown', keyPush);
-var interval = setInterval(game, 1000/5);
-var running = true;
+var tail = 3;
 
 var xVelocity=yVelocity=0;
 var xPlayer=yPlayer=10;
 var gridSize=tileCount=20;
 var xApple=yApple=15;
 var trail=[];
-var tail = 5;
 
 var store = window.localStorage;
 
@@ -18,11 +16,16 @@ var btnNewGameEl = document.getElementById('new-game');
 var btnSaveInitials = document.getElementById('store-initials');
 var btnClearScores = document.getElementById('clear-scores');
 var inpInitials = document.getElementById('initials');
+var lblInitials = document.getElementById('label');
 var listingEl = document.getElementById('listing');
 
 var newGameHandler = () => {
+    inpInitials.style.display = 'none';
+    lblInitials.style.display = 'none';
+    btnSaveInitials.style.display = 'none';
     running = true;
-    interval = setInterval(game, 1000/5);
+    tail = 3;
+    interval = setInterval(game, 1000/tail);
 }
 
 var saveInitialsHandler = () => {
@@ -47,6 +50,7 @@ btnClearScores.addEventListener('click', clearScoresHandlers);
 btnSaveInitials.addEventListener('click', saveInitialsHandler);
 
 function updateHighScores() {
+    initialArray = JSON.parse(store.getItem('scores'));
     listingEl.textContent = '';
     initialArray.forEach((value)=> {
         var node = document.createElement('li');
@@ -55,8 +59,6 @@ function updateHighScores() {
         listingEl.appendChild(node);
     });
 }
-
-updateHighScores();
 
 function game() {
     running = true;
@@ -91,6 +93,9 @@ function game() {
     }
 
     if (xPlayer==xApple&&yPlayer==yApple) {
+        console.log('eat that apple');
+        clearInterval(interval);
+        interval = setInterval(game, 1000/tail);
         tail++;
         xApple=Math.floor(Math.random()*tileCount);
         yApple=Math.floor(Math.random()*tileCount);
@@ -103,7 +108,9 @@ function game() {
 function endGame() {
     running = false; 
     clearInterval(interval);
-
+    lblInitials.style.display = 'block';
+    inpInitials.style.display = 'block';
+    btnSaveInitials.style.display = 'block';
 }
 
 function keyPush(event) {
@@ -113,7 +120,7 @@ function keyPush(event) {
                 running = false;
                 clearInterval(interval);
             } else {
-                interval = setInterval(game, 1000/15);
+                interval = setInterval(game, 1000/tail);
             }
             break;
         case 37:
@@ -134,3 +141,10 @@ function keyPush(event) {
             break;
     }
 }
+
+xVelocity = -1;
+inpInitials.style.display = 'none';
+lblInitials.style.display = 'none';
+btnSaveInitials.style.display = 'none';
+updateHighScores();
+interval = setInterval(game, 1000/tail);

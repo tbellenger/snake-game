@@ -11,6 +11,10 @@ div {
     margin: 1em auto;
 }
 
+button, label {
+    margin: 5px auto;
+}
+
 #instructions {
     flex-direction:column;
 }
